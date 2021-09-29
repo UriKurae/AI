@@ -3,10 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class NavController : MonoBehaviour
+public class AIController : MonoBehaviour
 {
     public NavMeshAgent agent;
     public GameObject target;
+
+    public GameObject[] waypoints;
+    int patrolWP = 0;
+
+    public bool seek = false;
+    public bool wander = false;
+    public bool pursue = false;
+    public bool flee = false;
+    public bool patrol = false;
+    public bool stop = false;
+
 
     // Start is called before the first frame update
     void Start()
@@ -17,7 +28,11 @@ public class NavController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        Flee();
+        if (seek) Seek();
+        else if (wander) Wander();
+        else if (pursue) Pursue();
+        else if (flee) Flee();
+        else if (patrol) Patrol();           
     }
 
     void Seek()
@@ -53,5 +68,14 @@ public class NavController : MonoBehaviour
         Vector3 targetDir = target.transform.position - transform.position;
         float lookAhead = targetDir.magnitude / agent.speed;
         agent.destination = -targetDir; // * lookAhead;
+    }
+
+    void Patrol()
+    {
+        if(!agent.pathPending && agent.remainingDistance < 0.5f)
+        {
+            patrolWP = (patrolWP + 1) % waypoints.Length;
+            agent.destination = waypoints[patrolWP].transform.position;
+        }
     }
 }
