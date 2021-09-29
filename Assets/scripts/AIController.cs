@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -32,7 +33,12 @@ public class AIController : MonoBehaviour
         else if (wander) Wander();
         else if (pursue) Pursue();
         else if (flee) Flee();
-        else if (patrol) Patrol();           
+        else if (patrol) Patrol();
+        if (stop)
+        {
+            agent.ResetPath();
+            stop = false;
+        }
     }
 
     void Seek()
@@ -42,10 +48,10 @@ public class AIController : MonoBehaviour
 
     void Wander()
     {
-        float radius = 2.0f;
+        float radius = 0.1f;
         float offset = 3.0f;
 
-        Vector3 localTarget = new Vector3(Random.Range(-1.0f, 1.0f), 0, Random.Range(-1.0f, 1.0f));
+        Vector3 localTarget = new Vector3(UnityEngine.Random.Range(-1.0f, 1.0f), 0, UnityEngine.Random.Range(-1.0f, 1.0f));
         localTarget.Normalize();
         localTarget *= radius;
         localTarget += new Vector3(0, 0, offset);
@@ -67,7 +73,7 @@ public class AIController : MonoBehaviour
     {
         Vector3 targetDir = target.transform.position - transform.position;
         float lookAhead = targetDir.magnitude / agent.speed;
-        agent.destination = -targetDir; // * lookAhead;
+        agent.destination = -targetDir * lookAhead;
     }
 
     void Patrol()
@@ -77,5 +83,11 @@ public class AIController : MonoBehaviour
             patrolWP = (patrolWP + 1) % waypoints.Length;
             agent.destination = waypoints[patrolWP].transform.position;
         }
+    }
+
+    void Hide()
+    {
+        Func<GameObject, float> distance = (hs) => Vector3.Distance(target.transform.position, hs.transform.position);
+        GameObject hidingSpot = hidingSpots.Select(ho => (distance(ho), ho)).Min().Item2;
     }
 }
