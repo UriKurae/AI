@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,11 +13,14 @@ public class AIController : MonoBehaviour
     public GameObject[] waypoints;
     int patrolWP = 0;
 
+    public GameObject[] hidingSpots;
+
     public bool seek = false;
     public bool wander = false;
     public bool pursue = false;
     public bool flee = false;
     public bool patrol = false;
+    public bool hide = false;
     public bool stop = false;
 
 
@@ -34,6 +38,7 @@ public class AIController : MonoBehaviour
         else if (pursue) Pursue();
         else if (flee) Flee();
         else if (patrol) Patrol();
+        else if (hide) Hide();
         if (stop)
         {
             agent.ResetPath();
@@ -88,6 +93,18 @@ public class AIController : MonoBehaviour
     void Hide()
     {
         Func<GameObject, float> distance = (hs) => Vector3.Distance(target.transform.position, hs.transform.position);
+     
         GameObject hidingSpot = hidingSpots.Select(ho => (distance(ho), ho)).Min().Item2;
+
+        Vector3 dir = hidingSpot.transform.position - target.transform.position;
+        Ray backRay = new Ray(hidingSpot.transform.position, -dir.normalized);
+        RaycastHit info;
+        hidingSpot.GetComponent<Collider>().Raycast(backRay, out info, 50.0f);
+
+        agent.destination = info.point + dir.normalized + hidingSpot.transform.position;
+    }
+    float CalculateDistance(GameObject hs)
+    {
+        return Vector3.Distance(target.transform.position, hs.transform.position);
     }
 }
