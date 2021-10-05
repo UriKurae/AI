@@ -385,11 +385,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
---- !u!1 &779701018 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1983694637467298, guid: be44d0243648ece459799ac0d5d4a2a6, type: 3}
-  m_PrefabInstance: {fileID: 1772284516}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &871733302 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 4975976810483710590, guid: e6f91243a53d8cd4fab23ed891f0cc8a, type: 3}
@@ -455,7 +450,6 @@ MonoBehaviour:
   - {fileID: 1633760696}
   hidingSpots:
   - {fileID: 981034741}
-  - {fileID: 779701018}
   seek: 0
   wander: 0
   pursue: 0
