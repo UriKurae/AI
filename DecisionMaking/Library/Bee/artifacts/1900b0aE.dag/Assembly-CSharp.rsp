@@ -319,9 +319,13 @@
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEditor.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/UnityEngine.UI.ref.dll"
 -r:"Library/Bee/artifacts/1900b0aE.dag/VSSettingsProvider.ref.dll"
+"Assets/Scripts/Approaching.cs"
+"Assets/Scripts/BlackBoard.cs"
 "Assets/Scripts/FSM.cs"
+"Assets/Scripts/Hiding.cs"
 "Assets/Scripts/MouseMove.cs"
 "Assets/Scripts/Moves.cs"
+"Assets/Scripts/Wander.cs"
 -langversion:8.0
 
 /deterministic
